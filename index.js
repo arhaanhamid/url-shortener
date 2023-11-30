@@ -47,7 +47,7 @@ async function getLength(shortURL) {
   const length = await shortURL.aggregate([
     { $match: {} }, // match all documents
     { $count: "count" }, // count the number of documents
-  ]).result.$count;
+  ]).$count;
   return length;
 }
 

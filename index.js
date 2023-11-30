@@ -55,18 +55,13 @@ async function getCount() {
 }
 
 app.post("/api/shorturl", function (req, res) {
-  let dbLength = 0;
-  console.log(shortURL.countDocuments({}));
-  shortURL
-    .countDocuments({})
-    .then((count) => {
-      console.log(count);
-      dbLength = count;
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-  console.log(dbLength);
+  let dbLength;
+
+  shortURL.find({}).then((count) => {
+    console.log(count);
+    console.log(count.length);
+    dbLength = count.length;
+  });
 
   const url = new shortURL({ original_url: req.body.url, short_url: dbLength });
   url

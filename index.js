@@ -44,7 +44,16 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", function (req, res) {
-  const dbLength = mongoose.Collection.length;
+  let dbLength;
+  // Count documents in the collection
+  shortURL.countDocuments({}, (err, count) => {
+    if (err) {
+      console.error("Error counting documents:", err);
+    } else {
+      dbLength = count;
+    }
+  });
+
   console.log(dbLength);
   const url = new shortURL({ original_url: req.body.url, short_url: dbLength });
   url

@@ -44,17 +44,10 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", function (req, res) {
-  let dbLength;
   // Get the length of documents in the collection
-  shortURL
-    .countDocuments({})
-    .exec()
-    .then((count) => {
-      console.log(`Number of documents in the collection: ${count}`);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+  console.log(db.shortURL.estimatedDocumentCount({}));
+  console.log(db.shortURL.estimatedDocumentCount());
+  let dbLength = db.shortURL.estimatedDocumentCount({});
 
   console.log(dbLength);
   const url = new shortURL({ original_url: req.body.url, short_url: dbLength });

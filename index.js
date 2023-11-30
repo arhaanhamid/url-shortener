@@ -45,12 +45,13 @@ app.get("/api/hello", function (req, res) {
 
 app.post("/api/shorturl", function (req, res) {
   let dbLength;
+  console.log(shortURL.countDocuments({}))
   // Count documents in the collection
-  shortURL.countDocuments({}, (err, count) => {
-    if (err) {
+  shortURL.countDocuments({})
+  .then((count) => {
+    dbLength = count;
+  }).catch(err) {
       console.error("Error counting documents:", err);
-    } else {
-      dbLength = count;
     }
   });
 

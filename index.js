@@ -26,7 +26,7 @@ const urlSchema = new mongoose.Schema({
   short_url: String,
 });
 
-const shortURL = mongoose.model("Short_URL", urlSchema);
+const ShortURL = mongoose.model("ShortURL", urlSchema);
 
 app.use(cors());
 
@@ -43,27 +43,16 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-// Use countDocuments with async/await
-async function getCount() {
-  try {
-    const count = await shortURL.countDocuments();
-    console.log(count);
-    return count;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 app.post("/api/shorturl", function (req, res) {
   let dbLength;
 
-  shortURL.find({}).then((count) => {
+  ShortURL.find({}).then((count) => {
     console.log(count);
     console.log(count.length);
     dbLength = count.length;
   });
 
-  const url = new shortURL({ original_url: req.body.url, short_url: dbLength });
+  const url = new ShortURL({ original_url: req.body.url, short_url: dbLength });
   url
     .save()
     .then((result) => {

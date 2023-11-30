@@ -56,9 +56,9 @@ async function getCount() {
 
 app.post("/api/shorturl", function (req, res) {
   let dbLength;
-
+  console.log();
   shortURL
-    .countDocuments()
+    .countDocuments({})
     .then((count) => {
       console.log(count);
       dbLength = count;

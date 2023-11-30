@@ -45,15 +45,16 @@ app.get("/api/hello", function (req, res) {
 
 app.post("/api/shorturl", function (req, res) {
   let dbLength;
-  console.log(shortURL.countDocuments({}))
+  console.log(shortURL.countDocuments({}));
   // Count documents in the collection
-  shortURL.countDocuments({})
-  .then((count) => {
-    dbLength = count;
-  }).catch(err) {
-      console.error("Error counting documents:", err);
-    }
-  });
+  shortURL
+    .countDocuments({})
+    .then((count) => {
+      dbLength = count;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
   console.log(dbLength);
   const url = new shortURL({ original_url: req.body.url, short_url: dbLength });

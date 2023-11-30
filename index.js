@@ -45,6 +45,7 @@ app.get("/api/hello", function (req, res) {
 
 app.post("/api/shorturl", function (req, res) {
   const dbLength = mongoose.Collection.length;
+  console.log(dbLength);
   const url = new shortURL({ original_url: req.body.url, short_url: dbLength });
   url
     .save()

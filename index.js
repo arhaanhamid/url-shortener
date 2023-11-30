@@ -46,15 +46,10 @@ app.get("/api/hello", function (req, res) {
 app.post("/api/shorturl", function (req, res) {
   let dbLength;
 
-  // ShortURL.find({}, function()).then((count) => {
-  //   console.log(count);
-  //   console.log(count.length);
-  //   dbLength = count.length;
-  // });
-  ShortURL.find({}, function (err, data) {
-    if (err) console.log(err);
-    console.log(data);
-    dbLength = data.length;
+  ShortURL.find({}).then((count) => {
+    console.log(count);
+    console.log(count.length);
+    dbLength = count.length;
   });
 
   const url = new ShortURL({ original_url: req.body.url, short_url: dbLength });

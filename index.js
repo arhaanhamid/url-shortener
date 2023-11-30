@@ -46,7 +46,7 @@ app.get("/api/hello", function (req, res) {
 // Use countDocuments with async/await
 async function getCount() {
   try {
-    const count = await MyModel.countDocuments();
+    const count = await shortURL.countDocuments();
     console.log(count);
     return count;
   } catch (err) {

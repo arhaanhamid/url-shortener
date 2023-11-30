@@ -43,18 +43,18 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-async function getLength(shortURL) {
-  const length = await shortURL.aggregate([
-    { $match: {} }, // match all documents
-    { $count: "count" }, // count the number of documents
-  ]).$count;
-  return length;
-}
-
 app.post("/api/shorturl", function (req, res) {
-  let dbLength = getLength(shortURL);
-  // console.log(shortURL.countDocuments());
-  // Count documents in the collection
+  let dbLength;
+  // Get the length of documents in the collection
+  shortURL
+    .countDocuments({})
+    .exec()
+    .then((count) => {
+      console.log(`Number of documents in the collection: ${count}`);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 
   console.log(dbLength);
   const url = new shortURL({ original_url: req.body.url, short_url: dbLength });

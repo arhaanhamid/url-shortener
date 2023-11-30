@@ -53,8 +53,8 @@ app.post("/api/shorturl", function (req, res) {
   // });
   ShortURL.find({}, function (err, data) {
     if (err) console.log(err);
-    console.log(Data);
-    dblength = data.length;
+    console.log(data);
+    dbLength = data.length;
   });
 
   const url = new ShortURL({ original_url: req.body.url, short_url: dbLength });

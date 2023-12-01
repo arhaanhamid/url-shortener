@@ -43,16 +43,21 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
-app.post("/api/shorturl", function (req, res) {
-  let dbLength;
+app.post("/api/shorturl", async (req, res) => {
+  const dbLength = await ShortURL.countDocuments((count) => count);
+  if (!dbLength) {
+    res.status(500).json({ success: false });
+  }
+  // res.send({
+  //   dbLength: dbLength
+  // });
 
-  const k = ShortURL.find({}).then((count) => {
-    console.log(count);
-    console.log(count.length);
-    dbLength = count.length;
-  });
+  // const k = ShortURL.find({}).then((count) => {
+  //   console.log(count);
+  //   console.log(count.length);
+  //   dbLength = count.length;
+  // });
   console.log(dbLength);
-  console.log(k);
 
   const url = new ShortURL({ original_url: req.body.url, short_url: dbLength });
   url
@@ -68,7 +73,7 @@ app.post("/api/shorturl", function (req, res) {
 });
 
 app.get("/api/shorturl/:url", function (req, res) {
-  shortURL.findOne({ short_url: req.params.url }).then((result) => {
+  ShortURL.findOne({ short_url: req.params.url }).then((result) => {
     res.redirect(result.original_url);
   });
 });

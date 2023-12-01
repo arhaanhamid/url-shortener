@@ -47,30 +47,30 @@ app.post("/api/shorturl", async (req, res) => {
   const dns = new dns2();
   const result = await dns.resolveA(req.body.url);
   console.log(result.answers);
-  if (result.answers.length == 0)
+  if (result.answers.length == 0) {
     res.status(500).json({ error: "invalid url" });
-
-  //get documents length from database
-  const dbLength = await ShortURL.countDocuments({});
-  if (!dbLength && dbLength !== 0) {
-    res.status(500).json({ success: false });
+  } else {
+    //get documents length from database
+    const dbLength = await ShortURL.countDocuments({});
+    if (!dbLength && dbLength !== 0) {
+      res.status(500).json({ success: false });
+    } else {
+      // create a new document in db using model
+      const url = new ShortURL({
+        original_url: req.body.url,
+        short_url: dbLength + 1,
+      });
+      url
+        .save()
+        .then((result) => {
+          // done(null, result);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      res.json({ original_url: req.body.url, short_url: dbLength + 1 });
+    }
   }
-
-  // create a new document in db using model
-  const url = new ShortURL({
-    original_url: req.body.url,
-    short_url: dbLength + 1,
-  });
-  url
-    .save()
-    .then((result) => {
-      // done(null, result);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
-  res.json({ original_url: req.body.url, short_url: dbLength + 1 });
 });
 
 app.get("/api/shorturl/:url", function (req, res) {

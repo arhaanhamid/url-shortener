@@ -44,7 +44,7 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", async (req, res) => {
-  const dbLength = await ShortURL.countDocuments((count) => count);
+  const dbLength = await ShortURL.countDocuments({});
   if (!dbLength) {
     res.status(500).json({ success: false });
   }

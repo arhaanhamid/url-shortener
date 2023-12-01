@@ -4,14 +4,13 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const dns = require("dns2");
 
-console.log("mongodb is starting");
 mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(process.env.PORT || 3000, function () {
     console.log(`Listening on port ${process.env.PORT}`);
   });
 });
-console.log("mongodb maybe started");
 
 mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDB Atlas");
@@ -44,21 +43,18 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", async (req, res) => {
+  // check if url is correct
+  dns.lookup(req.body.url, function (err, res) {
+    if (err) res.status(500).json({ error: "invalid url" });
+  });
+
+  //get documents length from database
   const dbLength = await ShortURL.countDocuments({});
   if (!dbLength && dbLength !== 0) {
     res.status(500).json({ success: false });
   }
-  // res.send({
-  //   dbLength: dbLength
-  // });
 
-  // const k = ShortURL.find({}).then((count) => {
-  //   console.log(count);
-  //   console.log(count.length);
-  //   dbLength = count.length;
-  // });
-  console.log(dbLength);
-
+  // create a new document in db using model
   const url = new ShortURL({
     original_url: req.body.url,
     short_url: dbLength + 1,

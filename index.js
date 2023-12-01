@@ -59,7 +59,10 @@ app.post("/api/shorturl", async (req, res) => {
   // });
   console.log(dbLength);
 
-  const url = new ShortURL({ original_url: req.body.url, short_url: dbLength });
+  const url = new ShortURL({
+    original_url: req.body.url,
+    short_url: dbLength + 1,
+  });
   url
     .save()
     .then((result) => {
@@ -69,7 +72,7 @@ app.post("/api/shorturl", async (req, res) => {
       console.error(error);
     });
 
-  res.json({ original_url: req.body.url, short_url: dbLength });
+  res.json({ original_url: req.body.url, short_url: dbLength + 1 });
 });
 
 app.get("/api/shorturl/:url", function (req, res) {

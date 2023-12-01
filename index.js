@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const { Lookup } = require("dns2");
+const dns2 = require("dns2");
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(process.env.PORT || 3000, function () {
@@ -44,10 +44,18 @@ app.get("/api/hello", function (req, res) {
 
 app.post("/api/shorturl", async (req, res) => {
   // check if url is correct
-  const lookup = new Lookup();
-  lookup.lookup(req.body.url, (err, result) => {
-    if (err) res.status(500).json({ error: "invalid url" });
-  });
+  const dns = new dns2();
+
+  (async () => {
+    const result = await dns.resolveA(req.body.url);
+    console.log(result.answers);
+    console.log(result);
+  })();
+
+  // const lookup = new Lookup();
+  // lookup.lookup(req.body.url, (err, result) => {
+  //   if (err) res.status(500).json({ error: "invalid url" });
+  // });
 
   //get documents length from database
   const dbLength = await ShortURL.countDocuments({});

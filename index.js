@@ -46,7 +46,7 @@ app.post("/api/shorturl", async (req, res) => {
   // check if url is correct
   const dns = new dns2();
   const result = await dns.resolveA(req.body.url);
-  if (!result) res.status(500).json({ error: "invalid url" });
+  if (!result.answers) res.status(500).json({ error: "invalid url" });
 
   //get documents length from database
   const dbLength = await ShortURL.countDocuments({});

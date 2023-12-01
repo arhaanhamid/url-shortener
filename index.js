@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const dns = require("dns2");
+const dns2 = require("dns2");
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(process.env.PORT || 3000, function () {
@@ -44,7 +44,7 @@ app.get("/api/hello", function (req, res) {
 
 app.post("/api/shorturl", async (req, res) => {
   // check if url is correct
-  dns.lookup(req.body.url, function (err, res) {
+  dns2.lookup(req.body.url, function (err, res) {
     if (err) res.status(500).json({ error: "invalid url" });
   });
 

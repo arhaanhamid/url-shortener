@@ -45,7 +45,7 @@ app.get("/api/hello", function (req, res) {
 app.post("/api/shorturl", async (req, res) => {
   // check if url is correct
   if (!validUrl.isWebUri(req.body.url)) {
-    res.status(500).json({ error: "invalid url" });
+    res.json({ error: "invalid url" });
   } else {
     //get documents length from database
     const dbLength = await ShortURL.countDocuments({});

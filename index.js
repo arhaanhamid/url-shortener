@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const validUrl = require("valid-url");
 
-mongoose.connect(process.env.MONGO).then(() => {
+mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(process.env.PORT || 3000, function () {
     console.log(`Listening on port ${process.env.PORT}`);
   });
